@@ -25,11 +25,11 @@
 		.kei-wrap {
 			max-width: 960px;
 			margin: 0 auto;
-			padding: 60px 24px 80px;
+			padding: 48px 24px 64px;
 			font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
-			font-size: 16px;
+			font-size: 14px;
 			color: #333;
-			line-height: 1.85;
+			line-height: 1.8;
 			letter-spacing: 0.02em;
 		}
 		.kei-wrap * { font-size: inherit; }
@@ -45,13 +45,13 @@
 		}
 		.kei-page-title h1 {
 			font-family: "Noto Serif JP", serif;
-			font-size: 36px;
+			font-size: 26px;
 			font-weight: 700;
 			line-height: 1.5;
 			color: #111;
 		}
 		.kei-page-title p {
-			font-size: 15px;
+			font-size: 13px;
 			color: #666;
 			margin-top: 12px;
 		}
@@ -61,11 +61,11 @@
 			background: #111;
 			color: #fff;
 			font-family: "Noto Serif JP", serif;
-			font-size: 22px;
+			font-size: 18px;
 			font-weight: 700;
 			line-height: 1.5;
-			padding: 16px 24px;
-			margin: 48px 0 28px 0;
+			padding: 14px 20px;
+			margin: 40px 0 24px 0;
 			border-radius: 6px;
 		}
 		.kei-chapter:first-of-type {
@@ -75,28 +75,32 @@
 		/* ===== Section Heading (h3) ===== */
 		.kei-h3 {
 			font-family: "Noto Sans JP", sans-serif;
-			font-size: 19px;
+			font-size: 15px;
 			font-weight: 700;
-			color: #111;
-			margin: 40px 0 16px 0;
-			padding: 0 0 10px 0;
-			border-bottom: 2px solid #C8102E;
+			color: #fff;
+			background: #C8102E;
+			margin: 36px 0 16px 0;
+			padding: 10px 16px;
+			border-radius: 4px;
+			border-bottom: none;
 		}
 
 		/* ===== Sub Heading (h4) ===== */
 		.kei-h4 {
 			font-family: "Noto Sans JP", sans-serif;
-			font-size: 17px;
+			font-size: 14px;
 			font-weight: 700;
 			color: #111;
-			margin: 32px 0 12px 0;
+			margin: 28px 0 10px 0;
+			padding: 0 0 6px 0;
+			border-bottom: 1px solid #E5E5E5;
 		}
 
 		/* ===== Paragraphs ===== */
 		.kei-body p {
-			margin-bottom: 16px;
-			font-size: 16px;
-			line-height: 1.85;
+			margin-bottom: 12px;
+			font-size: 14px;
+			line-height: 1.8;
 		}
 
 		/* ===== Unordered List (red dot) ===== */
@@ -107,10 +111,10 @@
 		}
 		.kei-body ul li {
 			position: relative;
-			padding-left: 20px;
-			margin-bottom: 10px;
-			line-height: 1.8;
-			font-size: 16px;
+			padding-left: 18px;
+			margin-bottom: 8px;
+			line-height: 1.75;
+			font-size: 14px;
 		}
 		.kei-body ul li::before {
 			content: '';
@@ -139,9 +143,9 @@
 			padding: 0;
 		}
 		.kei-body ol li {
-			margin-bottom: 10px;
-			line-height: 1.8;
-			font-size: 16px;
+			margin-bottom: 8px;
+			line-height: 1.75;
+			font-size: 14px;
 		}
 
 		/* ===== Takeaway / Quote Box ===== */
@@ -150,10 +154,10 @@
 			background: #FAFAFA;
 			border-left: 4px solid #C8102E;
 			border-radius: 0 8px 8px 0;
-			font-size: 15px;
+			font-size: 13px;
 			color: #111;
-			line-height: 1.85;
-			margin-bottom: 24px;
+			line-height: 1.8;
+			margin-bottom: 20px;
 		}
 
 		/* ===== Divider ===== */
@@ -209,18 +213,18 @@
 		/* ===== Responsive ===== */
 		@media (max-width: 767px) {
 			.kei-wrap {
-				padding: 40px 16px 60px;
-				font-size: 15px;
+				padding: 32px 14px 48px;
+				font-size: 13px;
 			}
-			.kei-page-title h1 { font-size: 26px; }
+			.kei-page-title h1 { font-size: 20px; }
 			.kei-chapter {
-				font-size: 18px;
-				padding: 14px 18px;
-				margin: 36px 0 20px 0;
+				font-size: 15px;
+				padding: 12px 16px;
+				margin: 32px 0 18px 0;
 			}
-			.kei-h3 { font-size: 17px; margin: 32px 0 12px 0; }
-			.kei-h4 { font-size: 16px; }
-			.kei-body p, .kei-body ul li, .kei-body ol li { font-size: 15px; }
+			.kei-h3 { font-size: 14px; margin: 28px 0 10px 0; padding: 8px 14px; }
+			.kei-h4 { font-size: 13px; }
+			.kei-body p, .kei-body ul li, .kei-body ol li { font-size: 13px; }
 			.kei-img img { border-radius: 2px; }
 		}
 
