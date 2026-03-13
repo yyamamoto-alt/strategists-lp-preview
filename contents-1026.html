@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="format-detection" content="telephone=no">
+	<meta content="#000" name="theme-color">
+	<title>フェルミ推定の教科書｜Strategists</title>
+	<meta name="description" content="フェルミ推定対策の教科書。全体像から基本動作・応用動作・必須知識・演習問題まで、構造的かつ実践的に解説。">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+
+	<style>
+		/* ===== Reset ===== */
+		*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+		img { max-width: 100%; height: auto; display: block; }
+
+		/* ===== Textbook Styles (all px, kei- prefix) ===== */
+		body { background: #fff; }
+
+		.kei-wrap {
+			max-width: 960px;
+			margin: 0 auto;
+			padding: 60px 24px 80px;
+			font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+			font-size: 16px;
+			color: #333;
+			line-height: 1.85;
+			letter-spacing: 0.02em;
+		}
+		.kei-wrap * { font-size: inherit; }
+		.kei-wrap a { color: #C8102E; }
+		.kei-wrap a:hover { opacity: 0.8; }
+
+		/* ===== Page Title ===== */
+		.kei-page-title {
+			text-align: center;
+			margin-bottom: 56px;
+			padding-bottom: 32px;
+			border-bottom: 1px solid #E5E5E5;
+		}
+		.kei-page-title h1 {
+			font-family: "Noto Serif JP", serif;
+			font-size: 36px;
+			font-weight: 700;
+			line-height: 1.5;
+			color: #111;
+		}
+		.kei-page-title p {
+			font-size: 15px;
+			color: #666;
+			margin-top: 12px;
+		}
+
+		/* ===== Chapter Heading (h2) ===== */
+		.kei-chapter {
+			background: #111;
+			color: #fff;
+			font-family: "Noto Serif JP", serif;
+			font-size: 22px;
+			font-weight: 700;
+			line-height: 1.5;
+			padding: 16px 24px;
+			margin: 48px 0 28px 0;
+			border-radius: 6px;
+		}
+		.kei-chapter:first-of-type {
+			margin-top: 0;
+		}
+
+		/* ===== Section Heading (h3) ===== */
+		.kei-h3 {
+			font-family: "Noto Sans JP", sans-serif;
+			font-size: 19px;
+			font-weight: 700;
+			color: #111;
+			margin: 40px 0 16px 0;
+			padding: 0 0 10px 0;
+			border-bottom: 2px solid #C8102E;
+		}
+
+		/* ===== Sub Heading (h4) ===== */
+		.kei-h4 {
+			font-family: "Noto Sans JP", sans-serif;
+			font-size: 17px;
+			font-weight: 700;
+			color: #111;
+			margin: 32px 0 12px 0;
+		}
+
+		/* ===== Paragraphs ===== */
+		.kei-body p {
+			margin-bottom: 16px;
+			font-size: 16px;
+			line-height: 1.85;
+		}
+
+		/* ===== Unordered List (red dot) ===== */
+		.kei-body ul {
+			list-style: none;
+			margin: 0 0 20px 0;
+			padding: 0;
+		}
+		.kei-body ul li {
+			position: relative;
+			padding-left: 20px;
+			margin-bottom: 10px;
+			line-height: 1.8;
+			font-size: 16px;
+		}
+		.kei-body ul li::before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 11px;
+			width: 8px;
+			height: 8px;
+			background: #C8102E;
+			border-radius: 50%;
+		}
+		/* Nested ul */
+		.kei-body ul ul {
+			margin-top: 6px;
+			margin-bottom: 6px;
+		}
+		.kei-body ul ul li::before {
+			width: 6px;
+			height: 6px;
+			background: #999;
+		}
+
+		/* ===== Ordered List ===== */
+		.kei-body ol {
+			margin: 0 0 20px 24px;
+			padding: 0;
+		}
+		.kei-body ol li {
+			margin-bottom: 10px;
+			line-height: 1.8;
+			font-size: 16px;
+		}
+
+		/* ===== Takeaway / Quote Box ===== */
+		.kei-takeaway {
+			padding: 20px 24px;
+			background: #FAFAFA;
+			border-left: 4px solid #C8102E;
+			border-radius: 0 8px 8px 0;
+			font-size: 15px;
+			color: #111;
+			line-height: 1.85;
+			margin-bottom: 24px;
+		}
+
+		/* ===== Divider ===== */
+		.kei-divider {
+			height: 1px;
+			background: #E5E5E5;
+			margin: 32px 0;
+		}
+
+		/* ===== Images ===== */
+		.kei-img {
+			margin: 24px 0;
+			text-align: center;
+		}
+		.kei-img img {
+			margin: 0 auto;
+			border-radius: 4px;
+			max-width: 100%;
+		}
+
+		/* ===== Strong emphasis ===== */
+		.kei-body strong {
+			font-weight: 700;
+			color: #111;
+		}
+
+		/* ===== End note ===== */
+		.kei-endnote {
+			margin-top: 48px;
+			padding: 24px;
+			background: #FAFAFA;
+			border-radius: 8px;
+			text-align: center;
+			font-size: 15px;
+			line-height: 1.85;
+			color: #333;
+		}
+		.kei-endnote a {
+			font-weight: 700;
+		}
+
+		/* ===== Fade-in ===== */
+		.kei-fade {
+			opacity: 0;
+			transform: translateY(16px);
+			transition: opacity 0.5s ease, transform 0.5s ease;
+		}
+		.kei-fade.is-visible {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		/* ===== Responsive ===== */
+		@media (max-width: 767px) {
+			.kei-wrap {
+				padding: 40px 16px 60px;
+				font-size: 15px;
+			}
+			.kei-page-title h1 { font-size: 26px; }
+			.kei-chapter {
+				font-size: 18px;
+				padding: 14px 18px;
+				margin: 36px 0 20px 0;
+			}
+			.kei-h3 { font-size: 17px; margin: 32px 0 12px 0; }
+			.kei-h4 { font-size: 16px; }
+			.kei-body p, .kei-body ul li, .kei-body ol li { font-size: 15px; }
+			.kei-img img { border-radius: 2px; }
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.kei-fade { opacity: 1; transform: none; transition: none; }
+		}
+	</style>
+</head>
+
+<body>
+
+<div class="kei-wrap">
+
+	<div class="kei-page-title kei-fade">
+		<h1>フェルミ推定の教科書</h1>
+		<p>Strategists フェルミ推定対策コンテンツ</p>
+	</div>
+
+	<!-- ==================== 本コンテンツの構成・内容 ==================== -->
+	<h2 class="kei-chapter kei-fade">本コンテンツの構成・内容</h2>
+
+	<div class="kei-body kei-fade">
+		<p>本コンテンツは<br><strong>・全体像→基本動作→応用動作→知識→演習</strong><br>という流れで展開します。</p>
+
+		<p>まず<strong>フェルミ推定を攻略する上での全体像</strong>を理解していただいた上で<strong>、絶対に身につけておくべきフェルミ推定の基本動作</strong>から、<strong>差をつけるための応用動作</strong>、その上で、<strong>知識としてインストールするべき事項</strong>を提示します。最後に演習問題を通して、本コンテンツで学んだ<strong>動作・知識を習得できる</strong>、という設計となっております。<br>n=1の体験談の枠を出ず、一個人の見解・感想を並べ立てただけの低質なコンテンツも散見されますが、本コンテンツは「フェルミ推定の教科書」を名乗る以上、<strong>構造的かつ理解容易性の高い構成</strong>たることを目指しました。</p>
+
+		<div class="kei-takeaway">
+			<strong>収録内容</strong><br><br>
+			<strong>◼︎Chapter1：全体像</strong><br>
+			・<strong>面接官</strong>はフェルミ推定を通して<strong>「何を」見ているのか？</strong><br>
+			・マンツーマン指導の際に<strong>9割の方にフィードバックすること</strong><br>
+			<strong>・フェルミ推定でアウトプットするべき事項・優先度</strong><br>
+			・<strong>フェルミ推定攻略のセンターピン</strong><br>
+			<strong>◼︎Chapter2：基本動作</strong><br>
+			・時間内に必ず答えを出すための重要な考え方<strong>〜アジャイルなフェルミ推定〜</strong><br>
+			・正しい発表の流れ<strong>〜真の結論ファースト〜</strong><br>
+			　<strong>そのまま使える発表スクリプト</strong><br>
+			・必須で覚えておきたい<strong>計算式5パターン</strong><br>
+			・フェルミ推定特有！<strong>桁の大きな計算のコツ</strong><br>
+			・「妥当な値だと思いますか？」に対する対処3パターン<br>
+			・前提設定の重要性<br>
+			・MBB内定レベルの目安<br>
+			<strong>◼︎Chapter3：応用動作</strong><br>
+			・<strong>高難易度フェルミ</strong>の時の対処法<br>
+			・<strong>録画面接フェルミ</strong>の対処法(ベインの新形式の対処法)<br>
+			・基本5パターン以外の立式でミスをしない方法<br>
+			<strong>・上級者の中で差をつける方法</strong><br>
+			<strong>◼︎Chapter4：フェルミ推定における必須知識</strong><br>
+			　<strong>必ず覚えておくべき数字</strong>集<br>
+			　〜計算結果の検算に使える！〜&nbsp;<strong>ファクト集</strong><br>
+			<strong>◼︎Chapter5：問題演習</strong><br>
+			　解いておくべき<strong>フェルミ9題+一言解説</strong>
+		</div>
+	</div>
+
+	<!-- ==================== Chapter1：全体像 ==================== -->
+	<h2 class="kei-chapter kei-fade">Chapter1：全体像</h2>
+
+	<h3 class="kei-h3 kei-fade">フェルミ推定を通して面接官が見ていること</h3>
+
+	<div class="kei-body kei-fade">
+		<p>フェルミ推定で面接官が評価していること、それは主に以下の4つです</p>
+
+		<p><strong>(1) MECEかつ適切な式分解ができるか (＝論点の構造化力)</strong><br>売上を客数×客単価に、客単価をさらに平均購入商品数×1個あたり単価のように、物事を<strong>正確に分解して考える力</strong>が見られています。また<strong>複数の分解方法の候補が思いつき</strong>、その中から<strong>適切なものを選択できる力</strong>を見られています。</p>
+
+		<p><strong>(2) 基本的な計算力・ビジネス感覚・常識があるか</strong></p>
+		<ul>
+			<li>桁の大きな計算に対応できているか？</li>
+			<li>あくまで「ざっくりした推定」であることを理解し適宜計算の単純化ができているか？</li>
+			<li>ある程度で良いので、各変数に適切なパラメータをおけているか</li>
+			<li>出てきた値に対する大小の感覚（「この事業の市場規模で数千億円は小さすぎる」「1店舗で数十億はちょっと高いな」と言った感覚）</li>
+			<li>ビジネスモデルが正しいか</li>
+		</ul>
+
+		<p><strong>(3) 時間内に結論と適切な式がアウトプットできる要領の良さ (=スマートさ)</strong><br>与えられた時間の中で、設定された目標を必ず達成できるか。また目標達成のために時間を有効に使うことができるか。といった力が見られています。<br>フェルミ推定はある意味、超最小単位のプロジェクトワークであり、あなたの基本的な仕事への取り組み方をみるという側面があります。フェルミ推定では短時間でやるべきことが多くあります。結論とそのロジックを時間内で算出するという目標達成のために、限られた時間というリソースを戦略的に配分できるかが重要です。<br>実はこのポイントで減点を食らっている方が非常に多く、後ほどこの点を深掘ります。</p>
+
+		<p><strong>(4)ディスカッションスキルがあるか？</strong></p>
+		<ul>
+			<li>質問の意味を理解しているか</li>
+			<li>質問には論点ずらしせずに答えているか</li>
+			<li>議論に抵抗が無いか</li>
+			<li>議論により解を深める意識があるか</li>
+		</ul>
+		<p>1-3が全部できていてもここがダメだと雇用したい対象とはなりません。フェルミ推定はファーストアウトの質はもちろんのこと、ディスカッションも重要な評価対象です。</p>
+	</div>
+
+	<h3 class="kei-h3 kei-fade">マンツーマン指導の際に9割の方にフィードバックすること</h3>
+
+	<div class="kei-body kei-fade">
+		<p>これまで多数のお客様（数百名）を指導させていただきましたが、多くの方ができていないこと（逆に内定する人が必ずできていること）は共通しています。それは与えられた時間内に必ず適切な値を結論として発表できることです。（例外はなく"絶対"です）</p>
+
+		<p>あなたは思考時間が経過した後、「もう少し時間を…」や「値は出たのですが計算結果が的外れなものに…」などと言っていませんか？<br>こうした方の問題点はズバリ…</p>
+
+		<p><strong>・フェルミ推定では結局何が重要なのかを意識できていないこと<br>・完璧なアウトプットを目指した結果、最悪のアウトプット（結論が出ない・間違っている）となったこと</strong><br>です。</p>
+
+		<p>人によっては衝撃の事実と思われるかもしれませんが、<strong>フェルミ推定は基本的にどんな問題であってもざっくりとした結論を算出するだけなら慣れると30秒あれば終わります</strong>。式を立ててざっくりとしたパラメータを入れて、計算する。それだけと言えばそれだけなんです。にもかかわらず、数分といった「膨大な」時間をお渡ししても、計算が終わらない・桁が大きくずれてしまう、というのは非常に残念だなという感覚を持ちます。</p>
+
+		<p>ファーストアウトプットの段階でラフな値と適切な式が出ていれば、その後面接官とのディスカッションで精緻化していくことができます。</p>
+	</div>
+
+	<h3 class="kei-h3 kei-fade">フェルミ推定でアウトプットするべき事項・優先度</h3>
+
+	<div class="kei-body kei-fade">
+		<p>フェルミ推定でアウトプットしなくてはいけない事項を改めて整理・重要度付けすると、</p>
+
+		<p><strong>(1)結論の値</strong><br><strong>(2)用いた式</strong><br><strong>(3)式に代入したパラメータ</strong><br><strong>(4)代入した値の根拠</strong><br>となります。つまり何よりも大事なのは<strong>「値が出ていること」</strong>。次点で<strong>「適切な式で算出できていること」</strong>なんです。</p>
+	</div>
+
+	<h3 class="kei-h3 kei-fade">フェルミ推定攻略のセンターピン</h3>
+
+	<div class="kei-body kei-fade">
+		<p>何事もセンターピンを抑えることが大事です。センターピンが抑えられていないのに、瑣末なことをグダグダと考えてもしょうがないのです。</p>
+
+		<p>ズバリ、フェルミ推定のセンターピンは</p>
+
+		<p><strong>必ず/時間内に/値(結論)+適切な式 をアウトプットをする</strong></p>
+
+		<p>ことにつきます。それ以外は正直、瑣末です。</p>
+
+		<p>例えば、みなさんが大好きなのは、<strong>(4)代入したパラメータの根拠</strong>に関する論点、例えば、商材独自の特性に基づいたセグメント分けが云々、日本の人口ピラミッドはツボ型だから…云々等。</p>
+
+		<p>もちろん、フェルミ推定の基本動作は非常にコモディティなスキルですので、最終そうした部分で差がついてくるというのも一理ある主張ではあり、本コンテンツでも応用動作で触れますが、読者の多数を占めるであろう初心者〜中級者の方（つまり問題によって時間内に結論を出すことすらままない段階）には、<strong>はっきり言って雑音</strong>です。まずはセンターピンの理解と、基本動作の徹底的な習得を行っていただくことが重要です。</p>
+
+		<p>さらに言えば、内定を目指す上でも正直、応用動作の習得は必須要件ではありません。選考の中で、フェルミ推定は足切りとして利用されることが多く（コモディティなフェルミ推定スキルでさえ十分に身につけられていないほどスマートでない or 志望度が高くない 人を弾くため）、基本動作さえしっかり習得できていれば基本的に合格となります。</p>
+
+		<p>本質的な思考、商材特性に応じた仮説〜等はケース面接の方でジャッジすれば良いだけですので、<strong>フェルミは一貫してとにかくセンターピンを遵守しよう、というスタンスがあれば特別なことをしなくても十分MBB内定は可能</strong>です。</p>
+
+		<p>次のチャプターでは上記、<strong>"必ず"時間内に妥当な値(結論)をアウトプットできる方法</strong><br>を基本動作としてついて紹介していきます。</p>
+	</div>
+
+	<!-- ==================== Chapter2：基本動作 ==================== -->
+	<h2 class="kei-chapter kei-fade">Chapter2：基本動作</h2>
+
+	<h3 class="kei-h3 kei-fade">時間内に必ず答えを出す、ための根幹の考え方</h3>
+
+	<div class="kei-body kei-fade">
+		<p>根幹の考え方として<strong>「アジャイルなフェルミ推定」</strong>というものを導入します。</p>
+
+		<p>「アジャイル」とは、元々ソフトウェア等の開発手法に関する用語です。<strong>最初から100点満点の完璧なプロダクトを設計し、長期間かけて一気に作り上げる</strong>「ウォーターフォール」開発と対比して、<strong>クイックにまず最低限の機能を持つプロダクト</strong>をリリースし、そこから顧客からのフィードバック等を踏まえながらアップデートを繰り返す中で、最適なプロダクトを探索・開発していく手法で、先進的なスタートアップ等で主流となっている開発手法です。昔のソフトウェア(ゲームソフトなどが分かり易いかなと)は、販売後にアップデート等が物理的にできないゆえ、完璧なプロダクトを作り切って販売するしかありませんでした。しかし、今は継続的にアップデートされることが前提となるソフト（スマホのアプリなど）がほとんどですよね。</p>
+
+		<p>では本題に入ります。<br><strong>「アジャイルなフェルミ推定」</strong>とはなんでしょうか？</p>
+
+		<p>「アジャイルなフェルミ推定」とは、<strong>「アジャイル」のエッセンスをフェルミ推定に導入</strong>したものです。通常のやり方では、完璧な解答を時間ギリギリで作ろうとした結果リスク満載ギャンブル的になってしまう一方で、私たちが提唱する「アジャイルなフェルミ推定」では、ラフな答えをクイックに作成した後で、短時間・ピンポイントな精緻化のサイクルを複数回繰り返すので、時間内で<strong>確実かつ最大限精緻な</strong>答えを創出することができます。</p>
+
+		<div class="kei-img">
+			<img src="https://akagiconsulting.com/wp/wp-content/uploads/2025/12/image-5.png" alt="アジャイルなフェルミ推定">
+		</div>
+	</div>
+
+	<h3 class="kei-h3 kei-fade">例題を用いた基本動作の解説</h3>
+
+	<div class="kei-body kei-fade">
+		<p>ここからは、実際の例題を「アジャイルなフェルミ推定」の手法に沿って解いていきます。（①〜⑦）</p>
+
+		<h4 class="kei-h4">例題) 日本にある車の台数は？</h4>
+
+		<p><strong>① 必要な前提を設定：個人所有と法人所有がありそうだが、結果へのインパクトの大きさと計算容易性を考慮して個人所有に一旦限定しよう<br>② 適切な立式 ：台数＝世帯数×所有率×平均所有台数</strong>)<br><strong>③ 肌感でパラメータを当てはめて計算</strong>&nbsp;：<strong>5000万世帯×40%×1.5台＝3000万台</strong></p>
+
+		<p>この程度のラフなアウトプットであれば、立式で躓かなければおよそ30秒程度でできるはずです。もちろん「ラフ」といっても、個人所有と法人所有の双方を検討できていること、主体が人口ではなく世帯であること、複数所有を想定できていること、立式に誤りがないこと、など要所をしっかり抑えることができています。たった数十秒でもそれなりのアウトプットは作れることが理解できると思います。</p>
+
+		<h4 class="kei-h4">④ ラフな計算で出てきたアウトプットが正しいか検算 or 比較で検証</h4>
+
+		<p>ラフな計算式と値がでたこのタイミングで、大きな誤り・見落としがないかここで確認をします。</p>
+		<ul>
+			<li>式は本当に正しいのか？検討漏れがないか？</li>
+			<li>複数ある立式の中でこれがベストだったのか？</li>
+			<li>値が感覚的にずれていないか？（別の立式で確認 or 他の数字と比較 ）
+				<ul>
+					<li>ずれている場合：計算でミスっているのか？式が間違っているのか？</li>
+				</ul>
+			</li>
+		</ul>
+		<p>を確認し、よければ次のステップに行きます。値の精緻化よりも先に、フェルミ推定における重要ポイントを検証できている理想的なやり方であることが明らかですね。</p>
+
+		<h4 class="kei-h4">⑤残った時間を使って、短時間で精緻化のサイクルを回す：まずは所有率に着目</h4>
+
+		<p>時間がまだまだ余っているので、ここからは細部に着目してアウトプットを磨いていきます。大きなところだとまず、パラメータの根拠がかなりざっくり（肌感）なので、根拠を置いていくことを考えます。精緻化による数値妥当性向上のインパクトを勘案し、まずは所有率の60%を精緻化していきます。（一気に複数の変数を対象にすると時間オーバーの可能性が高まるので避けよう）</p>
+
+		<p>所有率を精緻化するやり方に関しても、考えられる方向性は複数あるのでここでも妥当な選択が求められます。ex 所得水準によって分解する考え方/居住地域によって分解する考え方/世帯人数によって分解する考え方/ さらにそれぞれの組み合わせも可能</p>
+
+		<p>ここで選択をする際に意識していただきたいのが、精緻化に2つの要素があるということです。</p>
+
+		<p><strong>a：分解したセグメント間の比<br>b：各セグメントの値</strong></p>
+
+		<p>双方の値が精緻に求められること＝精緻化によるブレが少ないことです。<br>aは多くの方が意識できていないので、注意しましょう。例えば所得水準による分解は、aを正確に想定することが難しい人が多いと思います。一方で、居住地域であれば比較的、イメージしやすいはずです。精緻化の代表格と言える男女年齢のセグメント分けはこの点が優秀です。男女は遺伝子システムの正確性によりほぼ50%と言えますし、各世代の年齢も基本的には1.2億/80歳で150万人で良いでしょう。</p>
+
+		<p>話を今回の問題に戻すと、さまざまな選択肢がありますが、abの双方の正確性を最大化する観点で、居住地域によって分解する考え方を私は採用します。ここは個人が持っている知識によっても「正しい選択」は変わってくるでしょう。<br>ざっくりな考え方になりますが、東京の人口が1400万、神奈川の人口が1000万人、埼玉・千葉が700万くらい？、もちろんそれらの中でも車が必要になるエリアもあると考えると、ざっくり合計して3000万人くらい？→さらに大阪・愛知も踏まえると、車を日常生活で必要としないほどの都市エリアは4000万人くらい？以上より今回のaは、都市:郊外=4:8となりました。</p>
+
+		<p>都市部の所有率を20%、郊外の所有率を80%とすると、4/12×20%+8/12×80%= 60%<br>上の計算がピンとこなかった人へ、これは<strong>「加重平均」</strong>です。<br>加重平均とは、それぞれの量が違うもの同士の平均をとる場合に用いる計算式です。例えば先ほどの農村部と都市部の議論でも、都市部と農村部の世帯は必ずしも1:1とは限らず、その場合、単に平均をとるのは誤りです。（簡単な算数です）</p>
+
+		<p>「加重平均」の技術と「アジャイルなフェルミ推定」の考え方、はセットになる考え方と技術ですので、しっかり理解し使えるようになりましょう。</p>
+
+		<p>上記で60%という結果が出たので 元々の<br><strong>5000万世帯×40%×1.5台＝3000万台<br>をアップデートし、<br>40%→60% (150%増)となるので、3000万台→4500万台となります。</strong></p>
+
+		<p>なお東大生本等ではセグメント分けの方法として毎回表が使われているので、フェルミ推定＝表でセグメント分けという印象をお持ちの方が多いですが、表だと無駄が多いですし、アジャイルさの欠片もないため、表を使うことは滅多にないと考えてokです。</p>
+
+		<h4 class="kei-h4">⑥時間のある限りで同様に精緻化のサイクルを回す</h4>
+
+		<p>MBB内定レベルの目安としては、当たり前ですが、時間3分であれば、基本（結論・式・数字）が完璧＋1-2個の変数が適切に精緻化できている時間5分であれば、3-4個と言ったところでしょうか。</p>
+
+		<h4 class="kei-h4">⑦面接官に「少し早いですが終わりました」と余裕を持った状態で発表</h4>
+
+		<p>面接官からすると候補者が時間内に解き終わったかやや心配なのです。制限時間を面接官に告げさせるのではなく、5-10秒ほど早く（それ以上早いともっと精緻化してほしいと思う）自ら解き終えた旨を宣言し、主体的にアウトプットを開始しましょう。（これは細かいtipsですが、できる候補者の印象を与えられます）</p>
+
+		<div class="kei-divider"></div>
+
+		<p>いかがだったでしょうか？これが<strong>「アジャイル」と「加重平均」</strong>を用いたフェルミ推定の攻略法です。東大生本に代表される大袈裟で複雑な精緻化によるスタイルと比較して、いかにこちらが実際の面接に即した現実的なやり方かわかると思います。</p>
+
+		<p>このやり方は、上で示したように、圧倒的な安定感・要領の良さが強みであるだけでなく、さらに以下のような強みがあります。</p>
+
+		<ul>
+			<li><strong>思考の流れが綺麗にピラミットの上から下へと流れているので、面接官が思考を理解しやすい</strong></li>
+			<li><strong>「取り組み方」が洗練されているため、もし仮に事故ったとしても正直に思考の流れとどこでミスが生じたかを伝えられれば、大きく減点されない</strong></li>
+			<li><strong>精緻化をする際にセグメント分けをすることができるが、変数ごとに分解軸を変えることができる</strong>（今回の自動車の例でも例えば、所有率は居住地ベースの分解、所有台数は、世帯人数ベースの分解、のように変数ごとに使い分けることができます。東大生本のような表を用いるやり方では、全ての変数に対して統一な分解軸を採用することが必須となります。)</li>
+		</ul>
+	</div>
+
+	<h3 class="kei-h3 kei-fade">正しい発表の流れ〜真の結論ファースト〜</h3>
+
+	<div class="kei-body kei-fade">
+		<p>発表に関して重要なのは以下です。</p>
+
+		<p>真の結論ファーストであること。つまり結論たる値が最初にくることはもちろんのこと、その次も先述した重要度に沿い、以下の流れに沿っていてほしいです。</p>
+
+		<p><strong>(1)結論の値</strong><br><strong>(2)用いた式</strong><br><strong>(3)式に代入したパラメーター</strong><br><strong>(4)代入した値の根拠</strong><br>※前提を追加でおいた場合は (1)と(2)の間に入れましょう</p>
+
+		<p>よくある残念な例は</p>
+		<ul>
+			<li>(2)→(3)→(4)と行って、(1)が最後にくる</li>
+			<li>(1)→(2)→(3)→(4)ではあるが、(2)で式の全体像を言わずに(3)→(4)、(2)→(3)→(4)→(2)→(3)→(4)と行ったり来たりする</li>
+		</ul>
+
+		<p>です。<br>必ず、値・用いた式の全体像・代入したパラメーター全て、を冒頭で全て明かした後で、(4)の説明を始めてください。</p>
+	</div>
+
+	<h3 class="kei-h3 kei-fade">そのまま使える発表スクリプト</h3>
+
+	<div class="kei-body kei-fade">
+		<p>推奨する発表スクリプトを公開します。</p>
+
+		<div class="kei-takeaway">
+			・結論から申し上げて〇〇の市場規模(数)は〇〇です。<br>
+			・今回推定の対象としては、〜のようなもの（前提）を想定しました。<br>
+			・求めるために使った式は 〇〇×〇〇×◼︎◼︎×〇〇でして、さらに◼︎◼︎<br>
+			は精緻化を行い〇〇×〇〇としました。<br>
+			・具体的に当てはめたパラメータですが〇〇は〜人、〇〇は〜人、◼︎◼︎は〜人、〇〇は〜人、◼︎◼︎を精緻化した箇所については、〇〇は〜人、〇〇は〜です。<br>
+			・次に各パラメータの根拠ですが、〇〇は〜だと考えたからです。また〇〇は〜だと考えたからです（以後省略）<br>
+			・このようにして計算した結果冒頭でも申し上げた通り〇〇になりました。
+		</div>
+	</div>
+
+	<h3 class="kei-h3 kei-fade">適切な立式ができるようになるためには</h3>
+
+	<div class="kei-body kei-fade">
+		<p>ここまで立式のところでは躓かないことを前提に話を進めてきましたが、もちろん立式段階で躓いている方もいらっしゃいますので、ここではフェルミ推定の9割の問題に当てはめることができる頻出の計算式を5つ提示します。<strong>立式ができない方に対する処方箋はこの5パターンの暗記</strong>に尽きます。</p>
+	</div>
+
+	<!-- ===== End note ===== -->
+	<div class="kei-divider"></div>
+
+	<div class="kei-endnote kei-fade">
+		<p>ここから先はnoteで定価2480円で販売中。<br>ただし今なら、Strategists公式LINEの追加で無料プレゼント中！</p>
+		<p><a href="https://form.lmes.jp/landing-qr/2001908651-qNlBvb7O?uLand=IAg0nf">公式ラインを追加する</a>　｜　<a href="https://note.com/caseinlogic/n/n4ab9f7193260">noteで購入する</a></p>
+	</div>
+
+</div><!-- /.kei-wrap -->
+
+<script>
+	// Fade-in animation
+	(function() {
+		var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (!prefersReducedMotion) {
+			var observer = new IntersectionObserver(function(entries) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('is-visible');
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+			document.querySelectorAll('.kei-fade').forEach(function(el) { observer.observe(el); });
+		} else {
+			document.querySelectorAll('.kei-fade').forEach(function(el) { el.classList.add('is-visible'); });
+		}
+	})();
+</script>
+
+</body>
+</html>
